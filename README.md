@@ -10,8 +10,8 @@ python tnttagger --sentence "this is a test sentence"
 
 Output:
 ```
-Sentence: ['life', 'could', 'be', 'a', 'dream']
-POS Tags: [('life', 'NN'), ('could', 'MD'), ('be', 'VB'), ('a', 'DT'), ('dream', 'U')]
+Sentence: ['this', 'is', 'a', 'test', 'sentence']
+POS Tags: [('this', 'DT'), ('is', 'VBZ'), ('a', 'DT'), ('test', 'NN'), ('sentence', 'NN')]
 ```
 
 Works pretty well for a model purely based on statistical information, you can also pass the dataset you want to train/populate, default is `treebanck`, replace with other nltk dataset using `--traindata 'brown'`. 
