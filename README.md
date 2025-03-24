@@ -1,6 +1,6 @@
 # Usage
 Trigrams’n’Tags (TnT) is an efficient statistical
-part-of-speech tagger. This project implements the Hidden Markoc Model with a beam search to reduce the processing time from the paper TnT - A Statistical Part-of-Speech Taggerby Thorsten Brants [1].
+[part-of-speech tagger](https://universaldependencies.org/u/pos/). This project implements the Hidden Markoc Model with a beam search to reduce the processing time from the paper TnT - A Statistical Part-of-Speech Taggerby Thorsten Brants [1].
 
 ### Run from CLI
 To use it, simply run or pass your own sentence to tag.
