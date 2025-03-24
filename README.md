@@ -14,7 +14,7 @@ Sentence: ['life', 'could', 'be', 'a', 'dream']
 POS Tags: [('life', 'NN'), ('could', 'MD'), ('be', 'VB'), ('a', 'DT'), ('dream', 'U')]
 ```
 
-Works pretty well for purely based on statistical information, uses training data from nltk, you can also pass the dataset you want to train/populate, default is `treebanck`, replace with other nltk dataset using `--traindata "brown"`. 
+Works pretty well for a model purely based on statistical information, uses training data from nltk, you can also pass the dataset you want to train/populate, default is `treebanck`, replace with other nltk dataset using `--traindata 'brown'`. 
 
 Few changes from standard implementation is that it doesn't deal with unkown words and tags them as unk, and uses a simpler conditional frequency recorder class SimpleCDF for populating the tags.
 
