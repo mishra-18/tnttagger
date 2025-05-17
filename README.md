@@ -5,7 +5,7 @@ Trigrams’n’Tags (TnT) is an efficient statistical
 ### Run from CLI
 To use it, simply run or pass your own sentence to tag.
 ```
-python tnttagger --sentence "this is a test sentence"
+python tnttagger.py --sentence "this is a test sentence"
 ```
 
 Output:
