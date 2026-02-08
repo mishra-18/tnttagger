@@ -9,46 +9,19 @@ import argparse
 class HybridValue:
     def __init__(self):
         self._counter = 0
-        self._nested = None  # Will become a dict if used as a mapping
-
-    def _ensure_nested(self):
-        if self._nested is None:
-            self._nested = {}
+        self._nested = {}  
 
     def __iadd__(self, other):
-        if self._nested is not None:
-            raise TypeError("This HybridValue has been promoted to a nested mapping and cannot be incremented directly.")
         self._counter += other
         return self
 
     def __getitem__(self, key):
-        # When indexing, promote to mapping mode if not already.
-        self._ensure_nested()
         if key not in self._nested:
             self._nested[key] = HybridValue()
         return self._nested[key]
 
     def __setitem__(self, key, value):
-        # When assigning, promote to mapping mode.
-        self._ensure_nested()
-        # If assigning an int, store it inside a HybridValue.
-        if isinstance(value, int):
-            if key not in self._nested:
-                self._nested[key] = HybridValue()
-            self._nested[key]._counter = value
-        elif isinstance(value, HybridValue):
-            self._nested[key] = value
-        else:
-            # For any other type, store it directly.
-            self._nested[key] = value
-
-    def __repr__(self):
-        # When not promoted, show the counter.
-        if self._nested is None:
-            return repr(self._counter)
-        else:
-            return repr(self._nested)
-
+        self._nested[key] = value
 
 class SimpleCFD(dict):
     def __getitem__(self, key):
@@ -136,7 +109,7 @@ class TnTTagger:
     
     def tag_sent(self, sent):
 
-        current_state = [(["BOS", "BOS"], 0.0)]
+        current_state = [([("BOS", False), ("BOS", False)], 0.0)]
         tags = self.beamSearchTagger(sent, current_state)
 
         res = []
@@ -163,19 +136,17 @@ class TnTTagger:
         if word in self.w_t:
 
             for history, curr_sent_logprob in current_states:
-                for t in self.w_t[word]._nested.keys():
-                    tag = (t, C)
+                for tag in self.w_t[word]._nested.keys():
                     p_uni = self.uni_t[tag]._counter/self.size_
                     p_bi = self.bi_t[history[-1]][tag]._counter/(self.uni_t[history[-1]]._counter or math.inf)
                     p_tri = self.tri_t[tuple(history[-2:])][tag]._counter/(self.bi_t[history[-2]][history[-1]]._counter or math.inf)
-                    p_w = self.w_t[word][t]._counter /(self.uni_t[tag]._counter or math.inf)
+                    p_w = self.w_t[word][tag]._counter /(self.uni_t[tag]._counter or math.inf)
                     p = self.l1 * p_uni + self.l2 * p_bi + self.l3 * p_tri
                     try:
                         p2 = log(p, 2) + log(p_w, 2)
                     except:
                         p2 = 0.1
                     new_states.append((history + [tag], curr_sent_logprob + p2))
-
         else:
             
             tag = ("Unk", C)
@@ -222,5 +193,5 @@ if __name__ == '__main__':
 
     res = []
     for w, t in tags:
-        res.append((w, t[0]))
+        res.append((w, t))
     print(f"\n\nSentence: {sentence}\nPOS Tags: {res}")
